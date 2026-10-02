@@ -1702,6 +1702,419 @@
       cursor: pointer
     }
 
+    /* =========================================================
+   EXPERIENCE SHARING FEATURE
+   ========================================================= */
+
+    /* --- Floating Action Button --- */
+    .exp-fab {
+      position: fixed;
+      right: 20px;
+      bottom: calc(80px + env(safe-area-inset-bottom));
+      z-index: 45;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 50%;
+      background: #1E5FAD;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(30,95,173,0.35), 0 6px 20px rgba(30,95,173,0.20);
+      transition: transform .22s ease, box-shadow .22s ease, background .22s;
+    }
+    .exp-fab:hover {
+      transform: scale(1.08);
+      background: #174fa0;
+      box-shadow: 0 4px 14px rgba(30,95,173,0.45);
+    }
+    .exp-fab svg { width: 20px; height: 20px; }
+
+    /* --- Tooltip --- */
+    .exp-tooltip {
+      position: absolute;
+      right: calc(100% + 12px);
+      top: 50%;
+      transform: translateY(-50%) translateX(8px);
+      background: var(--deep);
+      color: #fff;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .22s, transform .22s, visibility .22s;
+      box-shadow: var(--shadow);
+      pointer-events: none;
+      font-family: var(--sans);
+    }
+    .exp-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -5px;
+      transform: translateY(-50%);
+      border-width: 5px 0 5px 6px;
+      border-style: solid;
+      border-color: transparent transparent transparent var(--deep);
+    }
+    .exp-fab:hover .exp-tooltip,
+    .exp-tooltip.show-mobile {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    /* --- Full-page Submission Modal --- */
+    .exp-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--paper);
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(18px);
+      transition: opacity .3s, transform .3s, visibility .3s;
+      display: flex;
+      flex-direction: column;
+      -webkit-overflow-scrolling: touch;
+    }
+    .exp-modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+    .exp-modal {
+      width: 100%;
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 28px max(var(--pad), env(safe-area-inset-left)) 80px;
+    }
+    .exp-modal-close {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 0 24px;
+      transition: color .2s;
+    }
+    .exp-modal-close:hover { color: var(--deep); }
+    .exp-modal-close svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .exp-modal-title {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(22px, 5vw, 28px);
+      color: var(--deep);
+      margin: 0 0 10px;
+      line-height: 1.4;
+    }
+    .exp-modal-desc {
+      color: var(--muted);
+      font-size: 15.5px;
+      margin: 0 0 28px;
+      line-height: 1.7;
+    }
+    .exp-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 0 0 28px;
+    }
+    .exp-field { margin-bottom: 18px; }
+    .exp-field label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 7px;
+    }
+    .exp-field input, .exp-field textarea {
+      width: 100%;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 11px 15px;
+      font: inherit;
+      font-size: 16px;
+      color: var(--ink);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .exp-field input:focus, .exp-field textarea:focus {
+      outline: none;
+      border-color: var(--brass);
+      box-shadow: 0 0 0 3px rgba(176,138,62,.14);
+    }
+    .exp-field textarea {
+      resize: vertical;
+      min-height: 180px;
+    }
+    .exp-form-msg {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 14.5px;
+      font-weight: 600;
+    }
+    .exp-form-msg.error  { display:block; background:#FEE2E2; color:#991B1B; border:1px solid #F87171; }
+    .exp-form-msg.success{ display:block; background:#D1FAE5; color:#065F46; border:1px solid #34D399; }
+    .exp-submit-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 14px 20px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--deep);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background .2s, transform .15s;
+    }
+    .exp-submit-btn:hover { background: var(--deep-2); }
+    .exp-submit-btn:active { transform: scale(.98); }
+    .exp-submit-btn .loader {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: exp-spin .7s linear infinite;
+    }
+    .exp-submit-btn.loading .loader { display: block; }
+    .exp-submit-btn.loading .btn-text { display: none; }
+    @keyframes exp-spin { to { transform: rotate(360deg); } }
+
+    /* --- Success view inside modal --- */
+    .exp-success-view {
+      text-align: center;
+      padding: 48px 16px;
+    }
+    .exp-success-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: #D1FAE5;
+      color: #059669;
+      display: grid; place-items: center;
+      margin: 0 auto 24px;
+      font-size: 32px;
+    }
+    .exp-success-view h2 {
+      font-family: var(--serif);
+      font-size: 26px;
+      color: var(--deep);
+      margin: 0 0 12px;
+    }
+    .exp-success-view p {
+      color: var(--muted);
+      font-size: 16px;
+      margin: 0 0 32px;
+      line-height: 1.7;
+    }
+    .exp-goto-btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 8px;
+      background: var(--deep);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 700;
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .exp-goto-btn:hover { background: var(--deep-2); color:#fff; }
+
+    /* --- Experience Section --- */
+    .experiences {
+      padding: 56px 0 32px;
+      background: var(--paper);
+    }
+    .exp-sec-in {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .exp-head {
+      padding: 0 var(--pad);
+      margin-bottom: 8px;
+    }
+    .exp-head h2 {
+      margin: 0 0 6px;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(22px, 5.5vw, 30px);
+      color: var(--deep);
+    }
+    .exp-head p {
+      margin: 0;
+      font-size: 15.5px;
+      color: var(--muted);
+    }
+    .exp-brass-div {
+      height: 2px;
+      width: 48px;
+      background: var(--brass);
+      margin: 14px var(--pad) 28px;
+      border-radius: 2px;
+    }
+    .exp-state-msg {
+      padding: 0 var(--pad);
+      font-size: 15.5px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* Carousel wrapper with drag support */
+    .exp-carousel-wrap {
+      position: relative;
+    }
+    .exp-carousel {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding: 4px var(--pad) 28px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      cursor: grab;
+    }
+    .exp-carousel.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+    .exp-carousel::-webkit-scrollbar { display: none; }
+
+    /* Arrow buttons */
+    .exp-arrow {
+      display: none;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-60%);
+      z-index: 5;
+      width: 40px; height: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      place-items: center;
+      color: var(--deep);
+      transition: background .2s, transform .2s;
+    }
+    .exp-arrow:hover { background: var(--mist); transform: translateY(-60%) scale(1.07); }
+    .exp-arrow svg { width: 18px; height: 18px; }
+    .exp-arrow-prev { left: 4px; }
+    .exp-arrow-next { right: 4px; }
+    @media (min-width: 768px) {
+      .exp-arrow { display: grid; }
+    }
+
+    /* Cards */
+    .exp-card {
+      flex: none;
+      width: 82vw;
+      max-width: 360px;
+      scroll-snap-align: start;
+      background: #fff;
+      border-radius: 14px;
+      padding: 22px 22px 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s;
+    }
+    .exp-card:hover { transform: translateY(-2px); }
+    @media (min-width: 768px) {
+      .exp-card { width: 320px; }
+    }
+    .exp-c-title {
+      margin: 0 0 10px;
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 17px;
+      line-height: 1.45;
+      color: var(--deep);
+    }
+    .exp-c-meta {
+      margin-bottom: 12px;
+      font-size: 13.5px;
+      color: var(--brass-dk);
+      font-weight: 600;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+    }
+    .exp-c-meta span { display: inline-flex; align-items: center; gap: 4px; }
+    .exp-c-text {
+      margin: 0 0 16px;
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--muted);
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .exp-c-more {
+      align-self: flex-start;
+      background: none;
+      border: none;
+      border-bottom: 1.5px solid var(--brass);
+      padding: 0;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--deep);
+      cursor: pointer;
+      transition: color .2s;
+    }
+    .exp-c-more:hover { color: var(--brass-dk); }
+
+    /* --- Read-More Modal --- */
+    .exp-read-modal .exp-modal {
+      padding-top: 20px;
+    }
+    .read-exp-title {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(20px, 4.5vw, 26px);
+      color: var(--deep);
+      margin: 0 0 14px;
+      line-height: 1.4;
+    }
+    .read-exp-meta {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--brass-dk);
+    }
+    .read-exp-text {
+      font-size: 16.5px;
+      line-height: 1.95;
+      color: var(--ink);
+      white-space: pre-wrap;
+    }
+
     @media (prefers-reduced-motion:reduce) {
       * {
         transition: none !important;
@@ -1722,6 +2135,7 @@
 
       .hdr,
       .top,
+      .exp-fab,
       .books,
       .inst,
       .hero {
@@ -1786,6 +2200,7 @@
         <a href="#s12" data-t="11">ശിഷ്യന്മാർ</a>
         <a href="#s13" data-t="12">ജീവിതദർശനം</a>
         <a href="#s14" data-t="13">കുടുംബവും ബഹുമതികളും</a>
+        <a href="#experiences" data-t="experiences">അനുഭവങ്ങൾ</a>
         <a class="bk" href="#books" data-t="books">പുസ്തകങ്ങൾ</a>
       </nav>
     </div>
@@ -1902,6 +2317,7 @@
           <li><a href="#s12" data-t="11">ശിഷ്യന്മാർ</a></li>
           <li><a href="#s13" data-t="12">ജീവിതദർശനം</a></li>
           <li><a href="#s14" data-t="13">കുടുംബവും ബഹുമതികളും</a></li>
+          <li><a href="#experiences" data-t="experiences">അനുഭവങ്ങൾ</a></li>
           <li><a class="bk" href="#books" data-t="books">പുസ്തകങ്ങൾ</a></li>
         </ol>
       </aside>
@@ -2286,6 +2702,27 @@
     </div>
   </main>
 
+  <!-- ============ EXPERIENCES SECTION ============ -->
+  <section class="experiences" id="experiences" aria-labelledby="expSectionTitle">
+    <div class="exp-sec-in">
+      <div class="exp-head">
+        <h2 id="expSectionTitle">അനുഭവങ്ങൾ</h2>
+        <p>ശൈഖുനായെക്കുറിച്ചുള്ള നിങ്ങളുടെ ഓർമ്മകളും അനുഭവങ്ങളും ഇവിടെ വായിക്കാം.</p>
+      </div>
+      <div class="exp-brass-div" aria-hidden="true"></div>
+      <div id="expStateMsg" class="exp-state-msg">അനുഭവങ്ങൾ ലോഡ് ചെയ്യുന്നു…</div>
+      <div class="exp-carousel-wrap">
+        <button class="exp-arrow exp-arrow-prev" id="expPrev" type="button" aria-label="മുമ്പത്തേക്ക്">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="exp-carousel" id="expCarousel" hidden role="list" aria-label="അനുഭവ കാർഡുകൾ"></div>
+        <button class="exp-arrow exp-arrow-next" id="expNext" type="button" aria-label="അടുത്തേക്ക്">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ BOOKS ============ -->
   <section class="books" id="books" aria-labelledby="booksTitle">
     <div class="books-in">
@@ -2315,6 +2752,78 @@
     </svg></button>
   <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="ചിത്രം"><img alt=""><button type="button"
       aria-label="അടയ്ക്കുക">×</button></div>
+
+  <!-- ============ FLOATING PENCIL BUTTON ============ -->
+  <button id="openExpBtn" class="exp-fab" type="button" aria-label="അനുഭവം പങ്കുവെക്കുക">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+    </svg>
+    <span class="exp-tooltip" aria-hidden="true">കെ.പി. ഉസ്താദുമായുള്ള നിങ്ങളുടെ അനുഭവങ്ങൾ പങ്കുവെക്കൂ</span>
+  </button>
+
+  <!-- ============ EXPERIENCE SUBMISSION MODAL ============ -->
+  <div id="expModal" class="exp-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="expModalTitle">
+    <div class="exp-modal">
+      <button id="closeExpModal" class="exp-modal-close" type="button" aria-label="തിരികെ പോവുക">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        തിരികെ
+      </button>
+
+      <div id="expFormView">
+        <h2 id="expModalTitle" class="exp-modal-title">കെ.പി. ഉസ്താദുമായുള്ള നിങ്ങളുടെ അനുഭവം</h2>
+        <p class="exp-modal-desc">ഉസ്താദുമായുള്ള നിങ്ങളുടെ ഓർമ്മകളും അനുഭവങ്ങളും മറ്റുള്ളവരുമായി പങ്കുവെക്കൂ.</p>
+        <div class="exp-divider"></div>
+        <div id="expFormMsg" class="exp-form-msg"></div>
+        <form id="expForm">
+          <div class="exp-field">
+            <label for="expName">പേര് *</label>
+            <input type="text" id="expName" name="name" required autocomplete="name" placeholder="ഉദാ: മുഹമ്മദ് അജാഷ്">
+          </div>
+          <div class="exp-field">
+            <label for="expPhone">ഫോൺ നമ്പർ *</label>
+            <input type="tel" id="expPhone" name="phone" required autocomplete="tel" placeholder="ഉദാ: 9876543210">
+          </div>
+          <div class="exp-field">
+            <label for="expPlace">സ്ഥലം *</label>
+            <input type="text" id="expPlace" name="place" required placeholder="ഉദാ: പാലക്കാട്">
+          </div>
+          <div class="exp-field">
+            <label for="expTitle">അനുഭവത്തിന്റെ തലക്കെട്ട് *</label>
+            <input type="text" id="expTitle" name="title" required placeholder="ഒരു വരിയിൽ">
+          </div>
+          <div class="exp-field">
+            <label for="expText">നിങ്ങളുടെ അനുഭവം *</label>
+            <textarea id="expText" name="experience" required rows="6" placeholder="നിങ്ങളുടെ ഓർമ്മകൾ ഇവിടെ എഴുതുക…"></textarea>
+          </div>
+          <button type="submit" id="expSubmitBtn" class="exp-submit-btn">
+            <span class="btn-text">അനുഭവം പങ്കുവെക്കുക</span>
+            <span class="loader" aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+
+      <div id="expSuccessView" class="exp-success-view" style="display:none">
+        <div class="exp-success-icon" aria-hidden="true">✓</div>
+        <h2>നന്ദി ❤️</h2>
+        <p>നിങ്ങളുടെ അനുഭവം വിജയകരമായി പങ്കുവെച്ചിരിക്കുന്നു.<br>അഡ്മിൻ അംഗീകരിച്ചതിനു ശേഷം ഇത് പ്രസിദ്ധീകരിക്കും.</p>
+        <button type="button" id="expGotoBtn" class="exp-goto-btn">അനുഭവങ്ങൾ കാണുക</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ READ-MORE MODAL ============ -->
+  <div id="readExpModal" class="exp-modal-overlay exp-read-modal" role="dialog" aria-modal="true" aria-labelledby="readExpTitle">
+    <div class="exp-modal">
+      <button id="closeReadExpModal" class="exp-modal-close" type="button" aria-label="അനുഭവങ്ങളിലേക്ക് മടങ്ങുക">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        ← അനുഭവങ്ങളിലേക്ക് മടങ്ങുക
+      </button>
+      <h2 id="readExpTitle" class="read-exp-title"></h2>
+      <div id="readExpMeta" class="read-exp-meta"></div>
+      <div id="readExpText" class="read-exp-text"></div>
+    </div>
+  </div>
 
   <script>
     (function () {
@@ -2596,6 +3105,305 @@
         window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank', 'noopener');
       }
       $$('[data-share]').forEach(function (b) { b.addEventListener('click', function () { shareIt(b.getAttribute('data-share')); }); });
+
+      /* ==========================================================
+         EXPERIENCE SHARING FEATURE
+         ==========================================================
+         CONFIGURATION — paste your Google Apps Script Web App URL below.
+         The URL comes from: Apps Script → Deploy → New Deployment → Web App → URL
+         ========================================================== */
+      var EXPERIENCE_API_URL = 'https://script.google.com/macros/s/AKfycbzVnCJjNTJ0tQL5aJmDE4DQAF8JRgn-FU9P6ngTRj2x6m9CY6WCdZ-PSaiYnS8Hi2Na/exec';
+
+      // Set to true to show full phone numbers publicly (default: masked)
+      var SHOW_FULL_PHONE = false;
+
+      /* --- Utility helpers --- */
+      function safeText(str) {
+        // Safe text node — never uses innerHTML with user content
+        return String(str || '');
+      }
+      function maskPhone(phone) {
+        if (SHOW_FULL_PHONE) return safeText(phone);
+        var p = safeText(phone);
+        if (p.length < 4) return p;
+        return p.slice(0, 2) + '••••••' + p.slice(-2);
+      }
+
+      /* --- Modal open / close --- */
+      var _expModal     = $('#expModal');
+      var _readModal    = $('#readExpModal');
+      var _prevScrollY  = 0;
+
+      function openExpModal(el) {
+        _prevScrollY = window.scrollY;
+        el.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeExpModal(el) {
+        el.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      /* --- Floating button --- */
+      var fabBtn = $('#openExpBtn');
+      if (fabBtn) {
+        fabBtn.addEventListener('click', function () {
+          $('#expFormView').style.display = 'block';
+          $('#expSuccessView').style.display = 'none';
+          $('#expForm').reset();
+          var msg = $('#expFormMsg');
+          msg.className = 'exp-form-msg';
+          msg.textContent = '';
+          openExpModal(_expModal);
+        });
+        // Brief tooltip on mobile tap
+        fabBtn.addEventListener('touchstart', function () {
+          var tip = $('.exp-tooltip', fabBtn);
+          if (tip) {
+            tip.classList.add('show-mobile');
+            setTimeout(function () { tip.classList.remove('show-mobile'); }, 2600);
+          }
+        }, { passive: true });
+      }
+
+      /* --- Close buttons --- */
+      var closeBtnMain = $('#closeExpModal');
+      if (closeBtnMain) closeBtnMain.addEventListener('click', function () { closeExpModal(_expModal); });
+
+      var closeReadBtn = $('#closeReadExpModal');
+      if (closeReadBtn) closeReadBtn.addEventListener('click', function () {
+        closeExpModal(_readModal);
+        // Restore scroll position so user lands back on carousel
+        window.scrollTo({ top: _prevScrollY, behavior: 'instant' });
+      });
+
+      /* --- "Go to experiences" after success --- */
+      var gotoBtn = $('#expGotoBtn');
+      if (gotoBtn) gotoBtn.addEventListener('click', function () {
+        closeExpModal(_expModal);
+        var expSec = $('#experiences');
+        if (expSec) { expSec.scrollIntoView({ behavior: 'smooth' }); }
+      });
+
+      /* --- Form submission --- */
+      var expForm = $('#expForm');
+      if (expForm) {
+        expForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var formMsg = $('#expFormMsg');
+          formMsg.className = 'exp-form-msg';
+          formMsg.textContent = '';
+
+          var payload = {
+            name:       expForm.elements['name'].value.trim(),
+            phone:      expForm.elements['phone'].value.trim(),
+            place:      expForm.elements['place'].value.trim(),
+            title:      expForm.elements['title'].value.trim(),
+            experience: expForm.elements['experience'].value.trim()
+          };
+
+          if (!payload.name || !payload.phone || !payload.place || !payload.title || !payload.experience) {
+            formMsg.textContent = 'ദയവായി എല്ലാ വിവരങ്ങളും നൽകുക.';
+            formMsg.className = 'exp-form-msg error';
+            return;
+          }
+
+          var submitBtn = $('#expSubmitBtn');
+          submitBtn.classList.add('loading');
+          submitBtn.disabled = true;
+
+          fetch(EXPERIENCE_API_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+          })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+            if (data.status === 'success') {
+              $('#expFormView').style.display = 'none';
+              $('#expSuccessView').style.display = 'block';
+            } else {
+              formMsg.textContent = data.message || 'ഒരു പിശക് സംഭവിച്ചു. ദയവായി പിന്നീട് ശ്രമിക്കൂ.';
+              formMsg.className = 'exp-form-msg error';
+            }
+          })
+          .catch(function () {
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+            formMsg.textContent = 'നെറ്റ്‌വർക്ക് പ്രശ്നം. ദയവായി വീണ്ടും ശ്രമിക്കൂ.';
+            formMsg.className = 'exp-form-msg error';
+          });
+        });
+      }
+
+      /* --- Load & render approved experiences --- */
+      var expData = [];
+      var expCarousel = $('#expCarousel');
+      var expStateMsg = $('#expStateMsg');
+
+      function renderExperiences() {
+        if (!expCarousel) return;
+        if (expData.length === 0) {
+          expStateMsg.textContent = 'ഇവിടെ ഇനിയും അനുഭവങ്ങൾ ചേർന്നിട്ടില്ല. നിങ്ങളുടെ അനുഭവം ആദ്യം പങ്കുവെക്കൂ.';
+          return;
+        }
+        expStateMsg.hidden = true;
+        expCarousel.hidden = false;
+        expCarousel.innerHTML = '';
+
+        expData.forEach(function (exp, idx) {
+          var card = document.createElement('article');
+          card.className = 'exp-card';
+          card.setAttribute('role', 'listitem');
+
+          // Title — safe textContent
+          var h3 = document.createElement('h3');
+          h3.className = 'exp-c-title';
+          h3.textContent = safeText(exp.title);
+
+          // Meta
+          var meta = document.createElement('div');
+          meta.className = 'exp-c-meta';
+          [['👤', exp.name], ['📍', exp.place], ['📞', maskPhone(exp.phone)]].forEach(function (pair) {
+            var sp = document.createElement('span');
+            sp.textContent = pair[0] + ' ' + safeText(pair[1]);
+            meta.appendChild(sp);
+          });
+
+          // Excerpt
+          var txt = document.createElement('p');
+          txt.className = 'exp-c-text';
+          txt.textContent = safeText(exp.experience);
+
+          // Read More button
+          var more = document.createElement('button');
+          more.className = 'exp-c-more';
+          more.type = 'button';
+          more.textContent = 'Read More →';
+          more.dataset.idx = idx;
+
+          card.appendChild(h3);
+          card.appendChild(meta);
+          card.appendChild(txt);
+          card.appendChild(more);
+          expCarousel.appendChild(card);
+        });
+
+        // Read-more click handler
+        $$('.exp-c-more', expCarousel).forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var exp = expData[parseInt(this.dataset.idx, 10)];
+            if (!exp) return;
+            _prevScrollY = window.scrollY;
+
+            var titleEl = $('#readExpTitle');
+            var metaEl  = $('#readExpMeta');
+            var textEl  = $('#readExpText');
+
+            titleEl.textContent = safeText(exp.title);
+
+            // Meta — safe DOM construction
+            metaEl.innerHTML = '';
+            [['👤', exp.name], ['📍', exp.place], ['📞', maskPhone(exp.phone)]].forEach(function (pair) {
+              var sp = document.createElement('span');
+              sp.textContent = pair[0] + ' ' + safeText(pair[1]);
+              metaEl.appendChild(sp);
+            });
+
+            textEl.textContent = safeText(exp.experience);
+            openExpModal(_readModal);
+          });
+        });
+
+        // Arrow carousel controls
+        initCarouselArrows();
+        // Drag-to-scroll
+        initDrag(expCarousel);
+      }
+
+      function loadExperiences() {
+        if (!expCarousel || !EXPERIENCE_API_URL) return;
+        fetch(EXPERIENCE_API_URL)
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data.status === 'success') {
+              expData = data.data || [];
+              renderExperiences();
+            } else {
+              expStateMsg.textContent = 'അനുഭവങ്ങൾ ഇപ്പോൾ ലഭ്യമല്ല. ദയവായി പിന്നീട് ശ്രമിക്കൂ.';
+            }
+          })
+          .catch(function () {
+            if (expStateMsg) expStateMsg.textContent = 'അനുഭവങ്ങൾ ഇപ്പോൾ ലഭ്യമല്ല. ദയവായി പിന്നീട് ശ്രമിക്കൂ.';
+          });
+      }
+
+      /* --- Carousel: arrow controls --- */
+      function initCarouselArrows() {
+        var prev = $('#expPrev'), next = $('#expNext');
+        if (!prev || !next || !expCarousel) return;
+        function scrollBy(dir) {
+          var card = expCarousel.querySelector('.exp-card');
+          var step = card ? card.offsetWidth + 16 : 340;
+          expCarousel.scrollBy({ left: dir * step, behavior: 'smooth' });
+        }
+        prev.addEventListener('click', function () { scrollBy(-1); });
+        next.addEventListener('click', function () { scrollBy(1); });
+      }
+
+      /* --- Carousel: mouse drag-to-scroll --- */
+      function initDrag(el) {
+        var dragging = false, startX = 0, scrollLeft = 0;
+        el.addEventListener('mousedown', function (e) {
+          dragging = true;
+          startX = e.pageX - el.offsetLeft;
+          scrollLeft = el.scrollLeft;
+          el.classList.add('is-dragging');
+        });
+        window.addEventListener('mouseup', function () {
+          if (!dragging) return;
+          dragging = false;
+          el.classList.remove('is-dragging');
+        });
+        el.addEventListener('mousemove', function (e) {
+          if (!dragging) return;
+          e.preventDefault();
+          el.scrollLeft = scrollLeft - (e.pageX - el.offsetLeft - startX);
+        });
+      }
+
+      /* --- Nav chip active state for #experiences --- */
+      (function () {
+        var expSec = $('#experiences');
+        if (!expSec) return;
+        var origUpdate = window.__expNavHooked;
+        if (origUpdate) return;
+        window.__expNavHooked = true;
+        // We patch the scroll listener to also highlight the experiences chip
+        var _booksEl = $('#books');
+        var _allChips = $$('[data-t]');
+        var _lastSet = '';
+        function _setExp(active) {
+          if (_lastSet === active) return;
+          _lastSet = active;
+          _allChips.forEach(function (a) {
+            var isActive = a.getAttribute('data-t') === active;
+            a.classList.toggle('on', isActive);
+            if (isActive) a.setAttribute('aria-current', 'true');
+            else a.removeAttribute('aria-current');
+          });
+        }
+        window.addEventListener('scroll', function () {
+          var expTop  = expSec.getBoundingClientRect().top;
+          var bkTop   = _booksEl ? _booksEl.getBoundingClientRect().top : 9999;
+          if (expTop <= 190 && bkTop > 190) { _setExp('experiences'); }
+        }, { passive: true });
+      })();
+
+      loadExperiences();
+
     })();
   </script>
 </body>
